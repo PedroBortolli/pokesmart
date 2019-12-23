@@ -42,7 +42,7 @@ const TableContainer = styled.div`
     border-radius: 8px;
     margin-top: 8px;
 `
-const mobileGrid = '44px 140px 32px 32px 32px 32px 32px 32px 54px'
+const mobileGrid = '34px 108px 28px 28px 28px 28px 28px 28px 46px'
 const desktopGrid = '50px 180px 64px 64px 64px 64px 64px 64px 72px'
 const Row = styled.div`
     height: 50px;
