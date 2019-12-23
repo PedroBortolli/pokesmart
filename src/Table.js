@@ -6,8 +6,7 @@ import useScreenSize from './hooks/useScreenSize'
 
 const Table = () => {
     const [name, setName] = useState('')
-    const [width, height] = useScreenSize()
-    console.log(width)
+    const [width] = useScreenSize()
     return (
         <Container>
             <Sticky>
