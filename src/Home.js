@@ -15,8 +15,8 @@ export default App
 
 const Container = styled.div`
     padding: 12px 8px 32px 8px;
+    min-height: 100vh;
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
     background-color: #383838;
