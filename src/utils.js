@@ -1,13 +1,13 @@
 const columns = [
-    { value: 'ID', label: 'ID' },
-    { value: 'Name', label: 'Name' },
-    { value: 'HP', label: 'HP' },
-    { value: 'Attack', label: 'Atk' },
-    { value: 'Defense', label: 'Def' },
-    { value: 'SpAtk', label: 'SpAtk' },
-    { value: 'SpDef', label: 'SpDef' },
-    { value: 'Speed', label: 'Speed' },
-    { value: 'Total', label: 'Total' }
+    { value: 'ID', desktopLabel: 'ID', mobileLabel: 'ID'},
+    { value: 'Name', desktopLabel: 'Name', mobileLabel: 'Name'},
+    { value: 'HP', desktopLabel: 'HP', mobileLabel: 'HP'},
+    { value: 'Attack', desktopLabel: 'Atk', mobileLabel: 'A'},
+    { value: 'Defense', desktopLabel: 'Def', mobileLabel: 'D'},
+    { value: 'SpAtk', desktopLabel: 'SpAtk', mobileLabel: 'SA'},
+    { value: 'SpDef', desktopLabel: 'SpDef', mobileLabel: 'SD'},
+    { value: 'Speed', desktopLabel: 'Speed', mobileLabel: 'S'},
+    { value: 'Total', desktopLabel: 'Total', mobileLabel: 'Tot'}
 ]
 
 export {

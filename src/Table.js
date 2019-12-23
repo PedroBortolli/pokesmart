@@ -2,9 +2,12 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { pokemons } from './db'
 import { columns } from './utils'
+import useScreenSize from './hooks/useScreenSize'
 
 const Table = () => {
     const [name, setName] = useState('')
+    const [width, height] = useScreenSize()
+    console.log(width)
     return (
         <Container>
             <Sticky>
@@ -12,15 +15,13 @@ const Table = () => {
             </Sticky>
 
             <TableContainer>
-                <Row>
-                    {columns.map(column => <Item key={column.value}>{column.label}</Item>)}
+                <Row width={width}>
+                    {columns.map(column => <Item key={column.value}>{width < 720 ? column.mobileLabel : column.desktopLabel}</Item>)}
                 </Row>
-                {pokemons.map((pokemon, id) => {
-                    //const display = pokemon.Name.toLowerCase().includes(name) ? 'grid' : 'none'
-                    const display = 'grid'
+                {pokemons.map(pokemon => {
                     return (
                         pokemon.Name.toLowerCase().includes(name) ?
-                        <Row key={pokemon.Name} style={{ display }}>
+                        <Row width={width} key={pokemon.Name}>
                             {columns.map(column => <Item key={`${pokemon.Name}-${column.value}`}>{pokemon[column.value]}</Item>)}
                         </Row> : null
                     )
@@ -42,10 +43,12 @@ const TableContainer = styled.div`
     border-radius: 8px;
     margin-top: 8px;
 `
+const mobileGrid = '44px 140px 32px 32px 32px 32px 32px 32px 54px'
+const desktopGrid = '50px 180px 64px 64px 64px 64px 64px 64px 72px'
 const Row = styled.div`
     height: 50px;
     display: grid;
-    grid-template-columns: 50px 180px 64px 64px 64px 64px 64px 64px 72px;
+    grid-template-columns: ${props => props.width < 720 ? mobileGrid : desktopGrid};
     :not(:first-child):hover {
         background-color: #575757;
     }
