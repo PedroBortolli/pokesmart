@@ -167,6 +167,14 @@ const TypesAdv = ({ pokemon, width }) => {
                     <span style={{justifyContent: 'flex-end'}}>Very strong to&nbsp;<b>(0.25x)</b></span>
                 </Row>
             }
+            {immuneTo.length > 0 &&
+                <Row>
+                    <Grid>
+                        {immuneTo.map(type => <Type tiny={width < 720} medium={width >= 720} type={type} />)}
+                    </Grid>
+                    <span style={{justifyContent: 'flex-end'}}>Immune to&nbsp;<b>(0x)</b></span>
+                </Row>
+            }
         </Container>
     )
 }
