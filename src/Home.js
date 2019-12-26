@@ -6,6 +6,7 @@ const App = () => {
     return (
         <Container>
             <h1>Pokésmart</h1>
+            <p>Order Pokémons from Sword/Shield based on your prefered base stats, check their weaknesses and strenghts and more!</p>
             <Table />
         </Container>
     )
@@ -25,4 +26,9 @@ const Container = styled.div`
     color: #f5f5f5;
     font-family: 'Poppins', sans-serif;
     text-align: center;
+    > p {
+        max-width: 580px;
+        padding: 0px 16px 0px 16px;
+        margin-top: 0px;
+    }
 `

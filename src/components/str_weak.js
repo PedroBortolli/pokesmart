@@ -138,7 +138,7 @@ const TypesAdv = ({ pokemon, width }) => {
             {veryWeakTo.length > 0 &&
                 <Row>
                     <Grid>
-                        {veryWeakTo.map(type => <Type tiny={width < 720} medium={width >= 720} type={type} />)}
+                        {veryWeakTo.map(type => <Type key={type} tiny={width < 720} medium={width >= 720} type={type} />)}
                     </Grid>
                     <span style={{justifyContent: 'flex-end'}}>Very weak to&nbsp;<b>(4x)</b></span>
                 </Row>
@@ -146,7 +146,7 @@ const TypesAdv = ({ pokemon, width }) => {
             {weakTo.length > 0 &&
                 <Row>
                     <Grid>
-                        {weakTo.map(type => <Type tiny={width < 720} medium={width >= 720} type={type} />)}
+                        {weakTo.map(type => <Type key={type} tiny={width < 720} medium={width >= 720} type={type} />)}
                     </Grid>
                     <span style={{justifyContent: 'flex-end'}}>Weak to&nbsp;<b>(2x)</b></span>
                 </Row>
@@ -154,7 +154,7 @@ const TypesAdv = ({ pokemon, width }) => {
             {strongTo.length > 0 &&
                 <Row>
                     <Grid>
-                        {strongTo.map(type => <Type tiny={width < 720} medium={width >= 720} type={type} />)}
+                        {strongTo.map(type => <Type key={type} tiny={width < 720} medium={width >= 720} type={type} />)}
                     </Grid>
                     <span style={{justifyContent: 'flex-end'}}>Strong to&nbsp;<b>(0.5x)</b></span>
                 </Row>
@@ -162,7 +162,7 @@ const TypesAdv = ({ pokemon, width }) => {
             {veryStrongTo.length > 0 &&
                 <Row>
                     <Grid>
-                        {veryStrongTo.map(type => <Type tiny={width < 720} medium={width >= 720} type={type} />)}
+                        {veryStrongTo.map(type => <Type key={type} tiny={width < 720} medium={width >= 720} type={type} />)}
                     </Grid>
                     <span style={{justifyContent: 'flex-end'}}>Very strong to&nbsp;<b>(0.25x)</b></span>
                 </Row>
@@ -170,7 +170,7 @@ const TypesAdv = ({ pokemon, width }) => {
             {immuneTo.length > 0 &&
                 <Row>
                     <Grid>
-                        {immuneTo.map(type => <Type tiny={width < 720} medium={width >= 720} type={type} />)}
+                        {immuneTo.map(type => <Type key={type} tiny={width < 720} medium={width >= 720} type={type} />)}
                     </Grid>
                     <span style={{justifyContent: 'flex-end'}}>Immune to&nbsp;<b>(0x)</b></span>
                 </Row>

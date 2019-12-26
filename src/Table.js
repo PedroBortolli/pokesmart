@@ -5,11 +5,12 @@ import { columns } from './utils'
 import useScreenSize from './hooks/useScreenSize'
 import Type from './components/type';
 import TypesAdv from './components/str_weak'
+import Sorter from './components/sorter';
 
 const Pokemon = ({ width, expand, pokemon, toggle }) => {
     return useMemo(() => {
         return (
-            <Row width={width} expand={expand} key={pokemon.Name} onClick={() => toggle(pokemon.ID)}>
+            <Row width={width} expand={expand} onClick={() => toggle(pokemon.ID)}>
                 {columns.map(column => <Item key={`${pokemon.Name}-${column.value}`}>{pokemon[column.value]}</Item>)}
                 {expand && (
                     <Info width={width}>
@@ -36,10 +37,15 @@ const Table = () => {
         else setPokemonInfo(null)
     }
 
+    const sort = () => {
+        // TODO
+    }
+
     return (
         <Container>
             <Sticky>
                 <Input value={name} onChange={e => setName(e.target.value.toLowerCase())} placeholder="Search for a pokémon" />
+                <Sorter width={width} sort={sort} />
             </Sticky>
 
             <TableContainer>
@@ -50,7 +56,7 @@ const Table = () => {
                     const expand = pokemonInfo === pokemon.ID
                     return (
                         pokemon.Name.toLowerCase().includes(name) &&
-                        <Pokemon width={width} expand={expand} pokemon={pokemon} toggle={togglePokemon} />
+                        <Pokemon key={pokemon.Name} width={width} expand={expand} pokemon={pokemon} toggle={togglePokemon} />
                     )
                 })}
             </TableContainer>
@@ -63,7 +69,7 @@ export default Table
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    
+    margin-top: 16px;
 `
 const TableContainer = styled.div`
     border: 2px solid #6d7075;
@@ -86,7 +92,7 @@ const Row = styled.div`
         border-bottom: 2px solid #6d7075;
         height: 40px;
         position: sticky;
-        top: 80px;
+        top: 180px;
         background-color: #4a4a4a;
     }
     > span:nth-child(9) {
@@ -115,11 +121,12 @@ const Input = styled.input`
 const Sticky = styled.div`
     position: sticky;
     top: 0px;
-    height: 80px;
+    height: 180px;
     background-color: #383838;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 `
 const Info = styled.div`
     display: flex;
