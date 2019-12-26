@@ -1,10 +1,30 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import styled from 'styled-components'
 import { pokemons } from './db'
 import { columns } from './utils'
 import useScreenSize from './hooks/useScreenSize'
 import Type from './components/type';
 import TypesAdv from './components/str_weak'
+
+const Pokemon = ({ width, expand, pokemon, toggle }) => {
+    return useMemo(() => {
+        return (
+            <Row width={width} expand={expand} key={pokemon.Name} onClick={() => toggle(pokemon.ID)}>
+                {columns.map(column => <Item key={`${pokemon.Name}-${column.value}`}>{pokemon[column.value]}</Item>)}
+                {expand && (
+                    <Info width={width}>
+                        <Types width={width}>
+                            {width >= 720 && <div style={{marginBottom: 8}}>{pokemon.Name}</div>}
+                            <Type type={pokemon.Type1} />
+                            {pokemon.Type2 && pokemon.Type1 !== pokemon.Type2 && <Type type={pokemon.Type2} />}
+                        </Types>
+                        <TypesAdv pokemon={pokemon} width={width} />
+                    </Info>
+                )}
+            </Row>
+        )
+    }, [width, expand])
+}
 
 const Table = () => {
     const [name, setName] = useState('')
@@ -29,20 +49,8 @@ const Table = () => {
                 {pokemons.map(pokemon => {
                     const expand = pokemonInfo === pokemon.ID
                     return (
-                        pokemon.Name.toLowerCase().includes(name) ?
-                        <Row width={width} expand={expand} key={pokemon.Name} onClick={() => togglePokemon(pokemon.ID)}>
-                            {columns.map(column => <Item key={`${pokemon.Name}-${column.value}`}>{pokemon[column.value]}</Item>)}
-                            {expand && (
-                                <Info width={width}>
-                                    <Types width={width}>
-                                        {width >= 720 && <div style={{marginBottom: 8}}>{pokemon.Name}</div>}
-                                        <Type type={pokemon.Type1} />
-                                        {pokemon.Type2 && pokemon.Type1 !== pokemon.Type2 && <Type type={pokemon.Type2} />}
-                                    </Types>
-                                    <TypesAdv pokemon={pokemon} width={width} />
-                                </Info>
-                            )}
-                        </Row> : null
+                        pokemon.Name.toLowerCase().includes(name) &&
+                        <Pokemon width={width} expand={expand} pokemon={pokemon} toggle={togglePokemon} />
                     )
                 })}
             </TableContainer>
