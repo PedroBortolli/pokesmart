@@ -1,13 +1,13 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { pokemons } from './db'
-import { columns } from './utils'
+import { columns, mapping } from './utils'
 import useScreenSize from './hooks/useScreenSize'
-import Type from './components/type';
+import Type from './components/type'
 import TypesAdv from './components/str_weak'
-import Sorter from './components/sorter';
+import Sorter from './components/sorter'
 
-const Pokemon = ({ width, expand, pokemon, toggle }) => {
+const Pokemon = ({ width, expand, pokemon, toggle, lastUpdated }) => {
     return useMemo(() => {
         return (
             <Row width={width} expand={expand} onClick={() => toggle(pokemon.ID)}>
@@ -24,21 +24,49 @@ const Pokemon = ({ width, expand, pokemon, toggle }) => {
                 )}
             </Row>
         )
-    }, [width, expand])
+    }, [width, expand, lastUpdated])
 }
 
 const Table = () => {
     const [name, setName] = useState('')
     const [pokemonInfo, setPokemonInfo] = useState(null)
+    const [mons, setMons] = useState([])
     const [width] = useScreenSize()
+    const [lastUpdated, setLastUpdated] = useState(+ new Date())
+    useEffect(() => setMons(pokemons, []))
 
     const togglePokemon = (id) => {
         if (!pokemonInfo || pokemonInfo !== id) setPokemonInfo(id)
         else setPokemonInfo(null)
     }
 
-    const sort = () => {
-        // TODO
+    const sort = (stats) => {
+        const priorities = [[], [], [], [], [], [], [], []]
+        Object.keys(stats).forEach(stat => {
+            if (stats[stat]) priorities[stats[stat] - 1].push(stat)
+        })
+        if (!priorities[0].length) priorities[0].push('ID')
+        const compare = (a, b) => {
+            let ret = 0
+            priorities.some(priority => {
+                if (priority.length > 0) {
+                    const totalA = priority.reduce((total, stat) => {
+                        return total + a[mapping[stat].value]
+                    }, 0)
+                    const totalB = priority.reduce((total, stat) => {
+                        return total + b[mapping[stat].value]
+                    }, 0)
+                    if (totalA < totalB) ret = 1
+                    else if (totalA > totalB) ret = -1
+                    if (priority[0] === 'ID') ret *= -1
+                }
+                if (ret) return ret
+            })
+            return ret || 0
+        }
+        const test = pokemons.sort((a, b) => compare(a, b))
+        setMons(test)
+        setLastUpdated(+ new Date())
     }
 
     return (
@@ -52,11 +80,11 @@ const Table = () => {
                 <Row width={width}>
                     {columns.map(column => <Item key={column.value}>{width < 720 ? column.mobileLabel : column.desktopLabel}</Item>)}
                 </Row>
-                {pokemons.map(pokemon => {
+                {(mons || pokemons).map(pokemon => {
                     const expand = pokemonInfo === pokemon.ID
                     return (
                         pokemon.Name.toLowerCase().includes(name) &&
-                        <Pokemon key={pokemon.Name} width={width} expand={expand} pokemon={pokemon} toggle={togglePokemon} />
+                        <Pokemon key={pokemon.Name} width={width} expand={expand} pokemon={pokemon} toggle={togglePokemon} lastUpdated={lastUpdated} />
                     )
                 })}
             </TableContainer>

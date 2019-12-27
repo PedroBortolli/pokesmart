@@ -1,17 +1,18 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { mapping } from '../utils'
 
-const colors = ['#1b5cbf', '#2c64b8', '#4976ba', '#6587ba', '#7d96bd', '#93a4bf']
+const colors = ['#1b5cbf', '#2c64b8', '#4976ba', '#6587ba', '#7d96bd', '#93a4bf', '#97a5b8']
 
 const Sorter = ({ width, sort }) => {
     const [operator, setOperator] = useState('>')
-    const [stats, setStats] = useState({'HP': null, 'Atk': null, 'Def': null, 'SpAtk': null, 'SpDef': null, 'Speed': null})
+    const [stats, setStats] = useState({ 'HP': null, 'Atk': null, 'Def': null, 'SpAtk': null, 'SpDef': null, 'Speed': null, 'Total': null })
 
     const changeOrder = (stat) => {
         let newOrder = 0
         Object.keys(stats).forEach(st => newOrder = Math.max(newOrder, stats[st]))
         if (!stats[stat]) {
-            if (operator === '>') newOrder = Math.min(newOrder + 1, 6)
+            if (operator === '>') newOrder = Math.min(newOrder + 1, 7)
             else newOrder = Math.max(1, newOrder)
             setStats({...stats, [stat]: stats[stat] ? null : newOrder})
         }
@@ -32,15 +33,19 @@ const Sorter = ({ width, sort }) => {
         }
     }
 
-    const resetStats = () => setStats({'HP': null, 'Atk': null, 'Def': null, 'SpAtk': null, 'SpDef': null, 'Speed': null})
+    const resetStats = () => {
+        const st = { 'HP': null, 'Atk': null, 'Def': null, 'SpAtk': null, 'SpDef': null, 'Speed': null, 'Total': null }
+        setStats(st)
+        sort(st)
+    }
 
     return (
         <div>
             <Buttons width={width}>
-                {['HP', 'Atk', 'Def', 'SpAtk', 'SpDef', 'Speed'].map(stat => {
+                {['HP', 'Atk', 'Def', 'SpAtk', 'SpDef', 'Speed', 'Total'].map(stat => {
                     return (
                         <div key={stat} style={{backgroundColor: colors[stats[stat] - 1]}} onClick={() => changeOrder(stat)}>
-                            <span>{stat}</span>
+                            <span>{width < 720 ? mapping[stat].mobileLabel : stat}</span>
                             {stats[stat] &&
                                 <Circle width={width}>
                                     <span style={{color: colors[stats[stat] - 1]}}>{stats[stat]}</span>
@@ -75,14 +80,14 @@ const Buttons = styled.div`
     > div {
         margin: 0px 4px 0px 4px;
         background-color: #adadad;
-        width: ${props => props.width < 720 ? '50px' : '60px'};
+        width: ${props => props.width < 720 ? '38px' : '60px'};
         height: ${props => props.width < 720 ? '32px': '44px'};
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
         :nth-child(1) { margin-left: 0px }
-        :nth-child(6) { margin-right: 0px }
+        :nth-child(7) { margin-right: 0px }
         font-size: ${props => props.width < 720 ? '12px' : '16px'};
         border-radius: 6px;
         cursor: pointer;
@@ -97,7 +102,7 @@ const Modes = styled.div`
     > span {
         width: 26px;
         height: 26px;
-        background-color: blue;
+        background-color: #1a008f;
         border-radius: 4px;
         display: flex;
         justify-content: center;
@@ -106,7 +111,7 @@ const Modes = styled.div`
         cursor: pointer;
         margin: 1px 4px 0px 4px;
         :nth-child(3) {
-            font-size: ${props => props.width < 720 ? '14px': '16px'};
+            font-size: ${props => props.width < 720 ? '14px': '15px'};
             margin: 0px 32px 0px 32px;
             background-color: transparent;
             width: auto;
