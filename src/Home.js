@@ -15,7 +15,7 @@ const App = () => {
 export default App
 
 const Container = styled.div`
-    padding: 12px 8px 32px 8px;
+    padding: 16px 8px 32px 8px;
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -26,6 +26,7 @@ const Container = styled.div`
     color: #f5f5f5;
     font-family: 'Poppins', sans-serif;
     text-align: center;
+    > h1 { margin-top: 0px }
     > p {
         max-width: 580px;
         padding: 0px 16px 0px 16px;
