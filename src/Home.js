@@ -26,10 +26,12 @@ const Container = styled.div`
     color: #f5f5f5;
     font-family: 'Poppins', sans-serif;
     text-align: center;
-    > h1 { margin-top: 0px }
+    > h1 { 
+        margin: 0px 0px 8px;
+    }
     > p {
         max-width: 580px;
         padding: 0px 16px 0px 16px;
-        margin-top: 0px;
+        margin: 0px 0px 8px;
     }
 `
