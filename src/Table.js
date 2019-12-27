@@ -6,6 +6,7 @@ import useScreenSize from './hooks/useScreenSize'
 import Type from './components/type'
 import TypesAdv from './components/str_weak'
 import Sorter from './components/sorter'
+import Loading from './assets/loading.gif'
 
 const Pokemon = ({ width, expand, pokemon, toggle, lastUpdated }) => {
     return useMemo(() => {
@@ -16,8 +17,8 @@ const Pokemon = ({ width, expand, pokemon, toggle, lastUpdated }) => {
                     <Info width={width}>
                         <Types width={width}>
                             {width >= 720 && <div style={{marginBottom: 8}}>{pokemon.Name}</div>}
-                            <Type type={pokemon.Type1} />
-                            {pokemon.Type2 && pokemon.Type1 !== pokemon.Type2 && <Type type={pokemon.Type2} />}
+                            <Type medium={width < 720} type={pokemon.Type1} />
+                            {pokemon.Type2 && pokemon.Type1 !== pokemon.Type2 && <Type medium={width < 720} type={pokemon.Type2} />}
                         </Types>
                         <TypesAdv pokemon={pokemon} width={width} />
                     </Info>
@@ -33,14 +34,23 @@ const Table = () => {
     const [mons, setMons] = useState([])
     const [width] = useScreenSize()
     const [lastUpdated, setLastUpdated] = useState(+ new Date())
-    useEffect(() => setMons(pokemons, []))
+    const [loading, setLoading] = useState(true)
+    useEffect(() => {
+        const fetchPokemons = async () => {
+            await setLoading(true)
+            await setMons(pokemons, [])
+            await setLoading(false)
+        }
+        fetchPokemons()
+    }, [])
 
     const togglePokemon = (id) => {
         if (!pokemonInfo || pokemonInfo !== id) setPokemonInfo(id)
         else setPokemonInfo(null)
     }
 
-    const sort = (stats) => {
+    const sort = async (stats) => {
+        await setLoading(true)
         const priorities = [[], [], [], [], [], [], [], []]
         Object.keys(stats).forEach(stat => {
             if (stats[stat]) priorities[stats[stat] - 1].push(stat)
@@ -64,9 +74,10 @@ const Table = () => {
             })
             return ret || 0
         }
-        const test = pokemons.sort((a, b) => compare(a, b))
-        setMons(test)
-        setLastUpdated(+ new Date())
+        const sortedPokemons = pokemons.sort((a, b) => compare(a, b))
+        await setMons(sortedPokemons)
+        await setLastUpdated(+ new Date())
+        setTimeout(() => setLoading(false), 50)
     }
 
     return (
@@ -80,7 +91,8 @@ const Table = () => {
                 <Row width={width}>
                     {columns.map(column => <Item key={column.value}>{width < 720 ? column.mobileLabel : column.desktopLabel}</Item>)}
                 </Row>
-                {(mons || pokemons).map(pokemon => {
+                {loading ? <Gif src={Loading} />:
+                    mons.map(pokemon => {
                     const expand = pokemonInfo === pokemon.ID
                     return (
                         pokemon.Name.toLowerCase().includes(name) &&
@@ -160,7 +172,7 @@ const Sticky = styled.div`
 const Info = styled.div`
     display: flex;
     justify-content: space-between;
-    width: ${props => props.width < 720 ? '348px' : '654px'};
+    width: ${props => props.width < 720 ? '328px' : '654px'};
     height: auto;
     padding: ${props => props.width < 720 ? '0px 4px 0px 4px' : '0px 16px 0px 16px'};
     margin-top: 16px;
@@ -177,4 +189,9 @@ const Types = styled.div`
             font-size: ${props => props.width < 720 ? '14px': '22px'};
         }
     }
+`
+const Gif = styled.img`
+    width: 192px;
+    height: 24px;
+    margin: 32px 0px 32px;
 `
