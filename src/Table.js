@@ -102,14 +102,15 @@ const Container = styled.div`
 const TableContainer = styled.div`
     border: 2px solid #6d7075;
     border-radius: 8px;
-    margin-top: 8px;
+    margin: 8px 12px 0px 12px;
 `
-const mobileGrid = '34px 108px 28px 28px 28px 28px 28px 28px 46px'
+const mobileGrid = '30px 100px 27px 27px 27px 27px 27px 27px 44px'
 const desktopGrid = '50px 180px 64px 64px 64px 64px 64px 64px 72px'
 const Row = styled.div`
     height: ${props => props.expand ? 'auto' : '50px'};
     display: grid;
     grid-template-columns: ${props => props.width < 720 ? mobileGrid : desktopGrid};
+    font-size: ${props => props.width < 720 ? '13px' : '16px'};
     cursor: pointer;
     :not(:first-child):hover {
         background-color: #575757;
