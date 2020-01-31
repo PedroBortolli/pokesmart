@@ -6,7 +6,7 @@ const App = () => {
     return (
         <Container>
             <h1>Pokésmart</h1>
-            <p>Order Pokémons from Sword/Shield based on your prefered base stats and check their weaknesses & strenghts!</p>
+            <p>Sort Pokémons from Sword/Shield based on your prefered base stats and check their weaknesses & strenghts!</p>
             <Table />
         </Container>
     )
